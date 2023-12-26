@@ -12,227 +12,232 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function login_perusahaan_page()
-    {
-        if (session()->has('user')) {
-            $user = session('user');
-            if ($user->role == 'admin_perusahaan') {
-                return redirect('/perusahaan/dashboard');
-            } else {
-                return redirect('/admin/dashboard');
-            }
-        }
-
-        return view('login_perusahaan');
+  public function login_perusahaan_page()
+  {
+    if (session()->has('user')) {
+      return redirect('/dashboard');
     }
 
-    public function login_perusahaan(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|string',
-            'password' => 'required|string|min:8|regex:/^(?=.*[0-9])/'
-        ], ['password.regex' => 'The password must have a minimum of 8 characters and contain numbers in it.']);
+    return view('login_perusahaan');
+  }
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        if (Auth::attempt(['username' => $request->get('username'), 'password' => $request->get('password')])) {
-            $user = Auth::user();
-
-            if ($user->status == 'pending') {
-                return redirect()->back()->with('status', 'pending')->with('message', 'Mohon maaf, akun anda belum diaktifasi oleh Admin. Silahkan tunggu informasi aktifasi akun di email!');
-            } else if ($user->status == 'reject') {
-                return redirect()->back()->with('status', 'reject')->with('message', 'Mohon maaf, aktifasi akun anda ditolak oleh Admin!');
-            } else if ($user->status == 'non-active') {
-                return redirect()->back()->with('status', 'non-active')->with('message', 'Mohon maaf, akun anda telah dinonaktifkan Admin!');
-            }
-
-            $request->session()->put('user', $user);
-
-            return redirect('/perusahaan/dashboard')->with('success', 'Login Berhasil! Selamat datang!');
-        } else {
-            return redirect()->back()->with('error', 'Login gagal. Periksa kembali username dan password!');
-        }
+  public function login_admin_page()
+  {
+    if (session()->has('user')) {
+      return redirect('/dashboard');
     }
 
-    public function login_admin_page()
-    {
-        if (session()->has('user')) {
-            $user = session('user');
-            if ($user->role == 'admin_perusahaan') {
-                return redirect('/perusahaan/dashboard');
-            } else {
-                return redirect('/admin/dashboard');
-            }
-        }
+    return view('login_admin');
+  }
 
-        return view('login_admin');
+  public function login(Request $request)
+  {
+    $validator = Validator::make(
+      $request->all(),
+      [
+        'username' => 'required|string',
+        'password' => 'required|string|min:8|regex:/^(?=.*[0-9])/',
+      ],
+      ['password.regex' => 'The password must have a minimum of 8 characters and contain numbers in it.']
+    );
+
+    if ($validator->fails()) {
+      return redirect()
+        ->back()
+        ->withErrors($validator)
+        ->withInput();
     }
 
-    public function login_admin(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|string',
-            'password' => 'required|string|min:8|regex:/^(?=.*[0-9])/'
-        ], ['password.regex' => 'The password must have a minimum of 8 characters and contain numbers in it.']);
+    if (Auth::attempt(['username' => $request->get('username'), 'password' => $request->get('password')])) {
+      $user = Auth::user();
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+      if ($user->status == 'pending') {
+        return redirect()
+          ->back()
+          ->with('status', 'pending')
+          ->with(
+            'message',
+            'Mohon maaf, akun anda belum diaktifasi oleh Admin. Silahkan tunggu informasi aktifasi akun di email!'
+          );
+      } elseif ($user->status == 'reject') {
+        return redirect()
+          ->back()
+          ->with('status', 'reject')
+          ->with('message', 'Mohon maaf, aktifasi akun anda ditolak oleh Admin!');
+      } elseif ($user->status == 'non-active') {
+        return redirect()
+          ->back()
+          ->with('status', 'non-active')
+          ->with('message', 'Mohon maaf, akun anda telah dinonaktifkan Admin!');
+      }
 
-        if (Auth::attempt(['username' => $request->get('username'), 'password' => $request->get('password')])) {
-            $user = Auth::user();
-            $request->session()->put('user', $user);
+      $request->session()->put('user', $user);
 
-            return redirect('/admin/dashboard')->with('success', 'Login Berhasil! Selamat datang!');
-        } else {
-            return redirect()->back()->with('error', 'Login gagal. Periksa kembali username dan password!')->withInput();
-        }
+      return redirect('/dashboard')->with('success', 'Login Berhasil! Selamat datang!');
+    } else {
+      return redirect()
+        ->back()
+        ->with('error', 'Login gagal. Periksa kembali username dan password!')
+        ->withInput();
+    }
+  }
 
+  public function register_page()
+  {
+    if (session()->has('user')) {
+      $user = session('user');
+      if ($user->role == 'admin_perusahaan') {
+        return redirect('/perusahaan/dashboard');
+      } else {
         return redirect('/admin/dashboard');
+      }
     }
 
-    public function register_page()
-    {
-        if (session()->has('user')) {
-            $user = session('user');
-            if ($user->role == 'admin_perusahaan') {
-                return redirect('/perusahaan/dashboard');
-            } else {
-                return redirect('/admin/dashboard');
-            }
-        }
+    return view('register');
+  }
 
-        return view('register');
+  public function register(Request $request)
+  {
+    $validator = Validator::make(
+      $request->all(),
+      [
+        'nama' => 'required|string',
+        'alamat' => 'required|string',
+        'email' => 'required|string',
+        'telp' => 'required',
+        'jenis' => 'required',
+        'username' => 'required|string|unique:users,username',
+        'password' => 'required|confirmed|min:8|regex:/^(?=.*[0-9])/',
+      ],
+      ['password.regex' => 'The password must have a minimum of 8 characters and contain numbers in it.']
+    );
+
+    if ($validator->fails()) {
+      return redirect()
+        ->back()
+        ->withErrors($validator)
+        ->withInput();
     }
 
-    public function register(Request $request)
-    {
-        // dd($request);
-        $validator = Validator::make($request->all(), [
-            'nama' => 'required|string',
-            'alamat' => 'required|string',
-            'email' => 'required|string',
-            'telp' => 'required',
-            'jenis' => 'required',
-            'username' => 'required|string|unique:users,username',
-            'password' => 'required|confirmed|min:8|regex:/^(?=.*[0-9])/'
-        ], ['password.regex' => 'The password must have a minimum of 8 characters and contain numbers in it.']);
+    $json_data = [
+      'nama_perusahaan' => $request->get('nama'),
+      'alamat_perusahaan' => $request->get('alamat'),
+      'email_perusahaan' => $request->get('email'),
+      'telp_perusahaan' => $request->get('telp'),
+      'jenis_perusahaan' => $request->get('jenis'),
+    ];
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+    User::create([
+      'username' => $request->get('username'),
+      'password' => Hash::make($request->get('password')),
+      'info' => json_encode($json_data),
+      'role' => 'admin_perusahaan',
+      'status' => 'pending',
+    ]);
 
-        $json_data = [
-            'nama_perusahaan' => $request->get('nama'),
-            'alamat_perusahaan' => $request->get('alamat'),
-            'email_perusahaan' => $request->get('email'),
-            'telp_perusahaan' => $request->get('telp'),
-            'jenis_perusahaan' => $request->get('jenis')
-        ];
+    return redirect()
+      ->back()
+      ->with(
+        'success',
+        'Registrasi berhasil! Status akun anda masih pending. Cek email anda secara berkala untuk pemberitahuan aktifasi akun!'
+      );
+  }
 
-        User::create([
-            'username' => $request->get('username'),
-            'password' => Hash::make($request->get('password')),
-            'info' => json_encode($json_data),
-            'role' => 'admin_perusahaan',
-            'status' => 'pending'
-        ]);
+  public function logout(Request $request)
+  {
+    $role = session('user')->role;
+    $request->session()->flush();
 
-        return redirect()->back()->with('success', 'Registrasi berhasil! Status akun anda masih pending. Cek email anda secara berkala untuk pemberitahuan aktifasi akun!');
+    if ($role == 'superadmin') {
+      return redirect('/admin/login');
+    } else {
+      return redirect('/perusahaan/login');
+    }
+  }
+
+  public function dashboard(Request $request)
+  {
+    if (!session()->has('user')) {
+      return redirect('/perusahaan/login')->with('not_login', 'Login Terlebih Dahulu!');
     }
 
-    public function logout(Request $request)
-    {
-        $role = session('user')->role;
-        $request->session()->flush();
+    $role = session('user')->role;
 
-        if ($role == 'superadmin') {
-            return redirect('/admin/login');
-        } else {
-            return redirect('/perusahaan/login');
-        }
+    return view('dashboard', ['role' => $role]);
+  }
+
+  public function approval_akun_page(Request $request)
+  {
+    if (!session()->has('user')) {
+      return redirect('/admin/login')->with('not_login', 'Login Terlebih Dahulu!');
     }
 
-    public function admin_dashboard(Request $request)
-    {
-        if (!session()->has('user')) {
-            return redirect('/admin/login')->with('not_login', 'Login Terlebih Dahulu!');
-        }
-
-        if (session('user')->role != 'superadmin') {
-            return redirect('/perusahaan/dashboard')->with('unauthorized', 'Tidak memiliki hak akses!');
-        }
-
-        return view('dashboard_admin');
+    if (session('user')->role != 'superadmin') {
+      return redirect('/perusahaan/dashboard')->with('unauthorized', 'Tidak memiliki hak akses!');
     }
 
-    public function approval_akun_page(Request $request)
-    {
-        if (!session()->has('user')) {
-            return redirect('/admin/login')->with('not_login', 'Login Terlebih Dahulu!');
-        }
-
-        if (session('user')->role != 'superadmin') {
-            return redirect('/perusahaan/dashboard')->with('unauthorized', 'Tidak memiliki hak akses!');
-        }
-
-        $perusahaan = User::where('status', '=', 'pending')->get();
-        foreach ($perusahaan as $p) {
-            $p->info = json_decode($p->info);
-        }
-
-        return view('approval_akun_admin', ['perusahaan' => $perusahaan]);
+    $perusahaan = User::where('status', '=', 'pending')->get();
+    foreach ($perusahaan as $p) {
+      $p->info = json_decode($p->info);
     }
 
-    public function reject_akun(Request $request)
-    {
-        $user = User::where('id', '=', $request->id)->first();
-        $user->status = 'reject';
-        $user->save();
-        $data = [
-            'title' => 'Aktifasi Ditolak!',
-            'content' => 'Mohon maaf, akun yang anda daftarkan tidak dapat diaktivasi oleh Admin. Silahkan lakukan pendaftaran ulang dengan data yang valid!'
-        ];
+    return view('approval_akun', ['perusahaan' => $perusahaan]);
+  }
 
-        $email_to = json_decode($user->info)->email_perusahaan;
-        Mail::to($email_to)->send(new Email($data));
+  public function reject_akun(Request $request)
+  {
+    $user = User::where('id', '=', $request->id)->first();
+    $user->status = 'reject';
+    $user->save();
+    $data = [
+      'title' => 'Aktifasi Ditolak!',
+      'content' =>
+      'Mohon maaf, akun yang anda daftarkan tidak dapat diaktivasi oleh Admin. Silahkan lakukan pendaftaran ulang dengan data yang valid!',
+    ];
 
-        return redirect()->back()->with('success', 'Reject Akun ' . $user->username . ' berhasil!');
+    $email_to = json_decode($user->info)->email_perusahaan;
+    Mail::to($email_to)->send(new Email($data));
+
+    return redirect()
+      ->back()
+      ->with('success', 'Reject Akun ' . $user->username . ' berhasil!');
+  }
+
+  public function approve_akun(Request $request)
+  {
+    $user = User::where('id', '=', $request->id)->first();
+    $user->status = 'active';
+    $user->save();
+    $data = [
+      'title' => 'Aktifasi Diterima!',
+      'content' => 'Selamat, akun yang anda daftarkan telah diaktivasi oleh Admin. Silahkan login kedalam sistem!',
+    ];
+
+    $email_to = json_decode($user->info)->email_perusahaan;
+    Mail::to($email_to)->send(new Email($data));
+
+    return redirect()
+      ->back()
+      ->with('success', 'Approve Akun ' . $user->username . ' berhasil!');
+  }
+
+  public function daftar_akun_page(Request $request)
+  {
+    if (!session()->has('user')) {
+      return redirect('/admin/login')->with('not_login', 'Login Terlebih Dahulu!');
     }
 
-    public function approve_akun(Request $request)
-    {
-        $user = User::where('id', '=', $request->id)->first();
-        $user->status = 'active';
-        $user->save();
-        $data = [
-            'title' => 'Aktifasi Diterima!',
-            'content' => 'Selamat, akun yang anda daftarkan telah diaktivasi oleh Admin. Silahkan login kedalam sistem!'
-        ];
-
-        $email_to = json_decode($user->info)->email_perusahaan;
-        Mail::to($email_to)->send(new Email($data));
-
-        return redirect()->back()->with('success', 'Approve Akun ' . $user->username . ' berhasil!');
+    if (session('user')->role != 'superadmin') {
+      return redirect('/perusahaan/dashboard')->with('unauthorized', 'Tidak memiliki hak akses!');
     }
 
-    public function daftar_akun_page(Request $request)
-    {
-        if (!session()->has('user')) {
-            return redirect('/admin/login')->with('not_login', 'Login Terlebih Dahulu!');
-        }
-
-        if (session('user')->role != 'superadmin') {
-            return redirect('/perusahaan/dashboard')->with('unauthorized', 'Tidak memiliki hak akses!');
-        }
-
-        $perusahaan = User::where('role', 'admin_perusahaan')->where('status', '!=', 'pending')->get();
-        foreach ($perusahaan as $p) {
-            $p->info = json_decode($p->info);
-        }
-
-        return view('daftar_akun_admin', ['perusahaan' => $perusahaan]);
+    $perusahaan = User::where('role', 'admin_perusahaan')
+      ->where('status', '!=', 'pending')
+      ->get();
+    foreach ($perusahaan as $p) {
+      $p->info = json_decode($p->info);
     }
+
+    return view('daftar_akun', ['perusahaan' => $perusahaan]);
+  }
 }

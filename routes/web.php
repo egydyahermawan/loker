@@ -43,8 +43,11 @@ use App\Http\Controllers\form_elements\BasicInput;
 use App\Http\Controllers\form_elements\InputGroups;
 use App\Http\Controllers\form_layouts\VerticalForm;
 use App\Http\Controllers\form_layouts\HorizontalForm;
+use App\Http\Controllers\LowonganController;
 use App\Http\Controllers\tables\Basic as TablesBasic;
 use App\Http\Controllers\UserController;
+use App\Models\Lowongan;
+use Google\Service\Adsense\Row;
 use Google\Service\Docs\Request;
 
 // Auth Page
@@ -54,30 +57,26 @@ Route::get('/perusahaan/register', [UserController::class, 'register_page']);
 
 // Auth Logic
 Route::post('/register', [UserController::class, 'register'])->name('register');
-Route::post('/perusahaan/login', [UserController::class, 'login_perusahaan'])->name('login_perusahaan');
-Route::post('/admin/login', [UserController::class, 'login_admin'])->name('login_admin');
-
-// Auth Logout
+Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
-// SuperAdmin
-Route::get('/admin/dashboard', [UserController::class, 'admin_dashboard'])->name('admin_dashboard');
-Route::get('/admin/akun/approval', [UserController::class, 'approval_akun_page'])->name('approval_akun_page');
-Route::get('/admin/akun/daftar', [UserController::class, 'daftar_akun_page'])->name('daftar_akun_page');
+// Pages
+Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+Route::get('/akun/approval', [UserController::class, 'approval_akun_page'])->name('approval_akun_page');
+Route::get('/akun/daftar', [UserController::class, 'daftar_akun_page'])->name('daftar_akun_page');
+Route::get('/lowongan', [LowonganController::class, 'lowongan_page'])->name('lowongan_page');
+Route::get('/lowongan/buka', [LowonganController::class, 'buka_lowongan_page'])->name('buka_lowongan_page');
+Route::get('/lowongan/edit/{id}', [LowonganController::class, 'edit_lowongan_page'])->name('edit_lowongan_page');
 
-// Approval Akun
+// Logic
 Route::post('/akun/reject', [UserController::class, 'reject_akun'])->name('reject_akun');
 Route::post('/akun/approve', [UserController::class, 'approve_akun'])->name('approve_akun');
-
-// AdminPerusahaan
-Route::get('/perusahaan/dashboard', function (Request $request) {
-    session()->flush();
-});
+Route::post('/lowongan/tambah', [LowonganController::class, 'tambah']);
+Route::post('/lowongan/hapus/{id}', [LowonganController::class, 'delete'])->name('hapus_lowongan');
+Route::post('/lowongan/update', [LowonganController::class, 'update'])->name('update_lowongan');
 
 // Mahasiswa
 Route::get('/', [CoreController::class, 'index']);
-
-
 
 // Main Page Route
 // Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
