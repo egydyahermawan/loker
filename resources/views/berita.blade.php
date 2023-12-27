@@ -51,7 +51,6 @@
                             <!-- Button trigger modal -->
                             <button onclick="window.location.href = '{{ route('tambah_berita_page') }}'"
                                 class="btn btn-primary">Tambah Berita</button>
-
                             <div class="row mt-4">
                                 @foreach ($berita as $item)
                                     <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
