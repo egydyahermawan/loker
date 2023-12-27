@@ -21,13 +21,13 @@
         <div class="layout-wrapper layout-content-navbar">
             <div class="layout-container">
                 <!-- Menu -->
-                @include('layouts\sections\menu\verticalMenu')
+                @include('layouts.sections.menu.verticalMenu')
                 <!-- / Menu -->
 
                 <!-- Layout container -->
                 <div class="layout-page">
                     <!-- Navbar -->
-                    @include('layouts\sections\navbar\navbar')
+                    @include('layouts.sections.navbar.navbar')
                     <!-- / Navbar -->
 
                     <!-- Content wrapper -->
@@ -89,7 +89,7 @@
                     </div>
 
                     <!-- Footer -->
-                    @include('layouts\sections\footer\footer')
+                    @include('layouts.sections.footer.footer')
 
                     <div class="content-backdrop fade"></div>
                 </div>
