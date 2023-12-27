@@ -112,8 +112,7 @@
                                                 <div class="mb-3">
                                                     <div class="input-group">
                                                         <input type="file" class="form-control" id="image_file"
-                                                            name="image_file"
-                                                            value="{{ old('image_file', $lowongan->image_file) }}">
+                                                            name="image_file" value="{{ old('image_file') }}">
                                                         <label class="input-group-text" for="image_file">Upload
                                                             Gambar</label>
                                                     </div>

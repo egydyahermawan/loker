@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\layouts\WithoutMenu;
@@ -15,8 +16,10 @@ use App\Http\Controllers\pages\MiscUnderMaintenance;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\cards\CardBasic;
 use App\Http\Controllers\CoreController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\user_interface\Accordion;
 use App\Http\Controllers\user_interface\Alerts;
 use App\Http\Controllers\user_interface\Badges;
@@ -50,32 +53,40 @@ use App\Models\Lowongan;
 use Google\Service\Adsense\Row;
 use Google\Service\Docs\Request;
 
-// Auth Page
-Route::get('/perusahaan/login', [UserController::class, 'login_perusahaan_page'])->name('login_perusahaan_page');
-Route::get('/admin/login', [UserController::class, 'login_admin_page']);
-Route::get('/perusahaan/register', [UserController::class, 'register_page']);
+// Auth
+Route::get('/perusahaan/login', [AuthController::class, 'login_perusahaan_page'])->name('login_perusahaan_page');
+Route::get('/admin/login', [AuthController::class, 'login_admin_page']);
+Route::get('/perusahaan/register', [AuthController::class, 'register_page']);
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Auth Logic
-Route::post('/register', [UserController::class, 'register'])->name('register');
-Route::post('/login', [UserController::class, 'login'])->name('login');
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+// Dashboard
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
-// Pages
-Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+// Akun
 Route::get('/akun/approval', [UserController::class, 'approval_akun_page'])->name('approval_akun_page');
 Route::get('/akun/daftar', [UserController::class, 'daftar_akun_page'])->name('daftar_akun_page');
+Route::post('/akun/reject', [UserController::class, 'reject_akun'])->name('reject_akun');
+Route::post('/akun/approve', [UserController::class, 'approve_akun'])->name('approve_akun');
+
+// Lowongan
 Route::get('/lowongan', [LowonganController::class, 'lowongan_page'])->name('lowongan_page');
 Route::get('/lowongan/buka', [LowonganController::class, 'buka_lowongan_page'])->name('buka_lowongan_page');
 Route::get('/lowongan/edit/{id}', [LowonganController::class, 'edit_lowongan_page'])->name('edit_lowongan_page');
-
-// Logic
-Route::post('/akun/reject', [UserController::class, 'reject_akun'])->name('reject_akun');
-Route::post('/akun/approve', [UserController::class, 'approve_akun'])->name('approve_akun');
 Route::post('/lowongan/tambah', [LowonganController::class, 'tambah']);
 Route::post('/lowongan/hapus/{id}', [LowonganController::class, 'delete'])->name('hapus_lowongan');
 Route::post('/lowongan/update', [LowonganController::class, 'update'])->name('update_lowongan');
 
-// Mahasiswa
+// Berita
+Route::get('/berita', [BlogController::class, 'index'])->name('berita_page');
+Route::get('/berita/tambah', [BlogController::class, 'tambah_page'])->name('tambah_berita_page');
+Route::post('/berita/tambah', [BlogController::class, 'create']);
+Route::get('/berita/edit/{id}', [BlogController::class, 'edit_page'])->name('edit_page');
+Route::post('/berita/update', [BlogController::class, 'update']);
+Route::post('/berita/delete/{id}', [BlogController::class, 'destroy']);
+
+// Before Login
 Route::get('/', [CoreController::class, 'index']);
 
 // Main Page Route

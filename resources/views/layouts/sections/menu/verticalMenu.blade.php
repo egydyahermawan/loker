@@ -54,8 +54,8 @@
             </a>
         </li>
         @if (session('user')->role == 'superadmin')
-            <li class="menu-item">
-                <a href="berita.html" class="menu-link">
+            <li class="menu-item {{ request()->is('berita') ? 'open' : '' }}">
+                <a href="{{ route('berita_page') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-table"></i>
                     <div data-i18n="Tables">Berita</div>
                 </a>
