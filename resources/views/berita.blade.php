@@ -67,7 +67,7 @@
                                                 </div>
                                                 <p class="card-text"
                                                     style="display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
-                                                    {{ $item->content }}</p>
+                                                    {{ strip_tags($item->content) }}</p>
                                                 <div class="d-flex flex-row justify-content-between">
                                                     <div>
                                                         <button class="btn btn-outline-info" data-bs-toggle="modal"

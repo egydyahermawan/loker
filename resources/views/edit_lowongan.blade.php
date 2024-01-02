@@ -71,15 +71,18 @@
                                                             <label for="status" class="form-label">Status</label>
                                                             <select id="status" class="form-select" name="status">
                                                                 <option value="" hidden>Pilih Status</option>
-                                                                <option value="Available"
-                                                                    selected={{ old('status', $lowongan->status) == 'available' ? true : false }}>
-                                                                    Available</option>
-                                                                <option value="Upcoming"
-                                                                    selected={{ old('status', $lowongan->status) == 'upcoming' ? true : false }}>
-                                                                    Upcoming</option>
-                                                                <option value="Unavailable"
-                                                                    selected={{ old('status', $lowongan->status) == 'unavailable' ? true : false }}>
-                                                                    Unavailable</option>
+                                                                <option value="available"
+                                                                    {{ old('status', $lowongan->status) == 'available' ? 'selected' : '' }}>
+                                                                    Available
+                                                                </option>
+                                                                <option value="upcoming"
+                                                                    {{ old('status', $lowongan->status) == 'upcoming' ? 'selected' : '' }}>
+                                                                    Upcoming
+                                                                </option>
+                                                                <option value="unavailable"
+                                                                    {{ old('status', $lowongan->status) == 'unavailable' ? 'selected' : '' }}>
+                                                                    Unavailable
+                                                                </option>
                                                             </select>
                                                             @error('status')
                                                                 <span class="text-danger mt-1">{{ $message }}</span>
