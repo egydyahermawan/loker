@@ -34,8 +34,8 @@
                     <div class="content-wrapper">
                         <!-- Content -->
                         @if (session('success'))
-                            <div class="bs-toast toast toast-placement-ex m-2 fade bg-success bottom-0 end-0 show"
-                                role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+                            <div class="bs-toast toast toast-placement-ex m-2 fade bg-success top-0 end-0 show" role="alert"
+                                aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
                                 <div class="toast-header">
                                     <i class="bx bx-bell me-2"></i>
                                     <div class="me-auto fw-medium">Berhasil</div>
@@ -124,13 +124,15 @@
                                                                                 <input type="hidden" name="id"
                                                                                     value="{{ $p->id }}">
                                                                                 <button type="submit"
-                                                                                    class="btn rounded-pill btn-danger">Reject</button>
+                                                                                    class="btn rounded-pill btn-danger"
+                                                                                    onclick="setLoading(this, 'left')">Reject</button>
                                                                             </form>
                                                                             <form action="/akun/approve" method="POST">
                                                                                 @csrf
                                                                                 <input type="hidden" name="id"
                                                                                     value="{{ $p->id }}">
                                                                                 <button type="submit"
+                                                                                    onclick="setLoading(this, 'right')"
                                                                                     class="btn rounded-pill btn-success">Approve</button>
                                                                             </form>
                                                                         </div>
@@ -171,5 +173,20 @@
 
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+        <script>
+            function setLoading(evt, position) {
+                evt.innerText = 'Loading...'
+                evt.disabled = true
+
+                if (position == 'left') {
+                    evt.parentNode.nextElementSibling.classList.toggle('d-none')
+                } else {
+                    evt.parentNode.previousElementSibling.classList.toggle('d-none')
+                }
+
+                evt.parentNode.submit()
+            }
+        </script>
     </body>
 @endsection

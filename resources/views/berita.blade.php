@@ -106,7 +106,7 @@
                                                                                     class="form-label">Content
                                                                                     Berita</label>
                                                                                 <p class="fw-light fs-6 mb-0">
-                                                                                    {{ $item->content }}</p>
+                                                                                    {!! $item->content !!}</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>

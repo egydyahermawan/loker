@@ -14,8 +14,8 @@
 
         <div class="container-xxl">
             @if (session('success'))
-                <div class="bs-toast toast fade show bg-success" id="toast-alert" role="alert" aria-live="assertive"
-                    aria-atomic="true">
+                <div class="bs-toast toast toast-placement-ex m-2 fade bg-success top-0 end-0 show" id="toast-alert"
+                    role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header">
                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>

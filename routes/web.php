@@ -69,6 +69,9 @@ Route::get('/akun/approval', [UserController::class, 'approval_akun_page'])->nam
 Route::get('/akun/daftar', [UserController::class, 'daftar_akun_page'])->name('daftar_akun_page');
 Route::post('/akun/reject', [UserController::class, 'reject_akun'])->name('reject_akun');
 Route::post('/akun/approve', [UserController::class, 'approve_akun'])->name('approve_akun');
+Route::post('/akun/deactivate', [UserController::class, 'deactivate']);
+Route::post('/akun/activate', [UserController::class, 'activate']);
+Route::post('/akun/delete', [UserController::class, 'delete']);
 
 // Lowongan
 Route::get('/lowongan', [LowonganController::class, 'lowongan_page'])->name('lowongan_page');

@@ -77,6 +77,9 @@
                                                                 <option value="Upcoming"
                                                                     selected={{ old('status', $lowongan->status) == 'upcoming' ? true : false }}>
                                                                     Upcoming</option>
+                                                                <option value="Unavailable"
+                                                                    selected={{ old('status', $lowongan->status) == 'unavailable' ? true : false }}>
+                                                                    Unavailable</option>
                                                             </select>
                                                             @error('status')
                                                                 <span class="text-danger mt-1">{{ $message }}</span>

@@ -33,18 +33,20 @@
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
                         <!-- Content -->
-                        {{-- @if (session('success'))
-                        <div class="bs-toast toast toast-placement-ex m-2 fade bg-success bottom-0 end-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-                            <div class="toast-header">
-                              <i class="bx bx-bell me-2"></i>
-                              <div class="me-auto fw-medium">Berhasil</div>
-                              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        @if (session('success'))
+                            <div class="bs-toast toast toast-placement-ex m-2 fade bg-success top-0 end-0 show" role="alert"
+                                aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+                                <div class="toast-header">
+                                    <i class="bx bx-bell me-2"></i>
+                                    <div class="me-auto fw-medium">Berhasil</div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body">
+                                    {{ session('success') }}
+                                </div>
                             </div>
-                            <div class="toast-body">
-                              {{ session('success') }}
-                            </div>
-                        </div>
-                        @endif --}}
+                        @endif
                         <div class="container-xxl flex-grow-1 container-p-y">
                             <h4 class="py-3 mb-4"><span class="text-muted fw-light">Akun /</span> Daftar akun</h4>
                             <!-- Striped Rows -->
@@ -54,12 +56,13 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Nama perusahaan</th>
-                                                <th>Alamat perusahaan</th>
-                                                <th>Email perusahaan</th>
-                                                <th>Nomor telephone perusahaan</th>
-                                                <th>jenis perusahaan</th>
-                                                <th>Actions</th>
+                                                <th>Nama Perusahaan</th>
+                                                <th>Alamat Perusahaan</th>
+                                                <th>Email Perusahaan</th>
+                                                <th class="text-center">Telp. Perusahaan</th>
+                                                <th class="text-center">Jenis Perusahaan</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class="table-border-bottom-0">
@@ -71,21 +74,47 @@
                                                     </td>
                                                     <td>{{ $p->info->alamat_perusahaan }}</td>
                                                     <td>{{ $p->info->email_perusahaan }}</td>
-                                                    <td><span class="">{{ $p->info->telp_perusahaan }}</span></td>
-                                                    <td><span class="">{{ $p->info->jenis_perusahaan }}</span></td>
+                                                    <td align="center"><span
+                                                            class="">{{ $p->info->telp_perusahaan }}</span></td>
+                                                    <td align="center"><span
+                                                            class="">{{ $p->info->jenis_perusahaan }}</span></td>
+                                                    <td align="center">
+                                                        <span
+                                                            class="{{ $p->status == 'active' ? 'text-success' : 'text-danger' }}">
+                                                            {{ strtoupper($p->status[0]) . substr($p->status, 1) }}
+                                                        </span>
+                                                    </td>
                                                     <td>
-                                                        <div class="dropdown">
-                                                            <button type="button"
-                                                                class="btn p-0 dropdown-toggle hide-arrow"
-                                                                data-bs-toggle="dropdown">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="update-akun-kerja.html"
-                                                                    href="javascript:void(0);"><i
-                                                                        class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                                <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                        class="bx bx-trash me-1"></i> Delete</a>
+                                                        <div class="row">
+                                                            @if ($p->status != 'non-active')
+                                                                <div class="col-6 px-1">
+                                                                    <form action="/akun/deactivate" method="POST">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id" id="id"
+                                                                            value="{{ $p->id }}">
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-outline-danger form-control">Non-Aktifkan</button>
+                                                                    </form>
+                                                                </div>
+                                                            @elseif($p->status == 'non-active')
+                                                                <div class="col-6 px-1">
+                                                                    <form action="/akun/activate" method="POST">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id" id="id"
+                                                                            value="{{ $p->id }}">
+                                                                        <button
+                                                                            class="btn btn-sm btn-outline-primary form-control">Aktifkan</button>
+                                                                    </form>
+                                                                </div>
+                                                            @endif
+                                                            <div class="col-6 px-1">
+                                                                <form action="/akun/delete" method="POST">
+                                                                    @csrf
+                                                                    <input type="hidden" name="id" id="id"
+                                                                        value="{{ $p->id }}">
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-danger form-control">Hapus</button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </td>

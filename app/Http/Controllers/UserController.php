@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Mail\Email;
 use App\Models\User;
+use Google\Service\CloudSourceRepositories\Repo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use tidy;
 
 class UserController extends Controller
 {
@@ -59,6 +61,8 @@ class UserController extends Controller
       'content' => 'Selamat, akun yang anda daftarkan telah diaktivasi oleh Admin. Silahkan login kedalam sistem!',
     ];
 
+    // return view('email.template', ['title' => $data['title'], 'content' => $data['content']]);
+
     $email_to = json_decode($user->info)->email_perusahaan;
     Mail::to($email_to)->send(new Email($data));
 
@@ -85,5 +89,30 @@ class UserController extends Controller
     }
 
     return view('daftar_akun', ['perusahaan' => $perusahaan]);
+  }
+
+  public function deactivate(Request $request)
+  {
+    $user = User::find($request->id);
+    $user->status = 'non-active';
+    $user->save();
+
+    return redirect()->back()->with('success', 'Berhasil menonaktifkan akun!');
+  }
+
+  public function activate(Request $request)
+  {
+    $user = User::find($request->id);
+    $user->status = 'active';
+    $user->save();
+
+    return redirect()->back()->with('success', 'Berhasil mengaktifkan akun!');
+  }
+
+  public function delete(Request $request)
+  {
+    $user = User::find($request->id);
+    $user->delete();
+    return redirect()->back()->with('success', 'Berhasil menghapus akun!');
   }
 }
