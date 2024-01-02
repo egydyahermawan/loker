@@ -52,6 +52,7 @@ use App\Http\Controllers\UserController;
 use App\Models\Lowongan;
 use Google\Service\Adsense\Row;
 use Google\Service\Docs\Request;
+use App\Http\Controllers\LandingController;
 
 // Auth
 Route::get('/perusahaan/login', [AuthController::class, 'login_perusahaan_page'])->name('login_perusahaan_page');
@@ -91,7 +92,8 @@ Route::get('/', [CoreController::class, 'index']);
 
 // Main Page Route
 // Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
-
+//landing page
+Route::get('/landing', [LandingController::class,'landing'])->name('landing');
 // // layout
 // Route::get('/layouts/without-menu', [WithoutMenu::class, 'index'])->name('layouts-without-menu');
 // Route::get('/layouts/without-navbar', [WithoutNavbar::class, 'index'])->name('layouts-without-navbar');
