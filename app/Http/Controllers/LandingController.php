@@ -21,4 +21,29 @@ class LandingController extends Controller
 
     return view('landing', ['data' => $data]);
   }
+  public function lowonganlanding()
+  {
+      // Logic to fetch data or perform operations for the About page
+      return view('lowonganlanding');
+  }
+  public function newslanding()
+  {
+      // Logic to fetch data or perform operations for the About page
+      return view('newslanding');
+  }
+  public function contactlanding()
+  {
+      // Logic to fetch data or perform operations for the About page
+      return view('contactlanding');
+  }
+  public function detaillowongan()
+  {
+      // Logic to fetch data or perform operations for the About page
+      return view('detaillowongan');
+  }
+  public function detailnews()
+  {
+      // Logic to fetch data or perform operations for the About page
+      return view('detailnews');
+  }
 }

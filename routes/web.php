@@ -46,3 +46,11 @@ Route::post('/berita/delete/{id}', [BlogController::class, 'destroy']);
 
 // Before Login
 Route::get('/', [LandingController::class, 'landing'])->name('landing');
+Route::get('/lowonganlanding', [LandingController::class, 'lowonganlanding'])->name('lowonganlanding');
+Route::get('/newslanding', [LandingController::class, 'newslanding'])->name('newslanding');
+Route::get('/contactlanding', [LandingController::class, 'contactlanding'])->name('contactlanding');
+
+//detail
+Route::get('/detaillowongan', [LandingController::class, 'detaillowongan'])->name('detaillowongan');
+Route::get('/detailnews', [LandingController::class, 'detailnews'])->name('detailnews');
+

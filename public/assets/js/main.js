@@ -1,3 +1,7 @@
+/**
+ * Main
+ */
+
 'use strict';
 
 let menu, animate;

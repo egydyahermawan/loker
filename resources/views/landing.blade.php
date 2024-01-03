@@ -113,16 +113,16 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">HOME</a>
+                            <a class="nav-link" href="{{ route('landing') }}">HOME</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">LOWONGAN</a>
+                            <a class="nav-link"href="{{ route('lowonganlanding') }}">LOWONGAN</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">NEWS</a>
+                            <a class="nav-link" href="{{ route('newslanding') }}">NEWS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">CONTACT</a>
+                            <a class="nav-link" href="{{ route('contactlanding') }}">CONTACT</a>
                         </li>
                     </ul>
                 </div>
@@ -160,7 +160,7 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-6 mt-5 mt-md-0 text-center">
                             <i class="ti-layers-alt text-primary h1"></i>
-                            <h3 class="mt-4 text-capitalize h5 "><a href="https://cdc.radenfatah.ac.id/front/announcement">
+                            <h3 class="mt-4 text-capitalize h5 "><a href="">
                                     Job Opportunity</a></h3>
                             <p class="regular text-muted">Collaborate with several leading company, government institutions
                                 and state-owned enterprises, CDC opens access for you to get the job you dream of.</p>
@@ -168,7 +168,7 @@
                         <div class="col-lg-4 col-md-12 mt-5 mt-lg-0 text-center">
                             <i class="ti-book text-primary h1"></i>
                             <h3 class="mt-4 text-capitalize h5 "><a
-                                    href="https://cdc.radenfatah.ac.id/front/beasiswa">Scholarship </a></h3>
+                                    href="">Scholarship </a></h3>
 
                             <p class="regular text-muted">Fulfill the requirements and get the scholar ship you need.</p>
 
@@ -176,7 +176,7 @@
                         </div>
                         <div class="col-lg-4 col-md-12 mt-5 mt-lg-0 text-center">
                             <i class="ti-announcement text-primary h1"></i>
-                            <h3 class="mt-4 text-capitalize h5 "><a href="https://cdc.radenfatah.ac.id/front/news">Latest
+                            <h3 class="mt-4 text-capitalize h5 "><a href="  ">Latest
                                     News</a></h3>
                             <p class="regular text-muted">Be the first to Know the latest news from CDC.</p>
 
@@ -200,7 +200,7 @@
                                     <div class="card">
                                         <img src="/storage/{{ $item['image'] }}" class="card-img-top" alt="...">
                                         <div class="card-body">
-                                            <h5 class="card-title text-black">{{ $item['title'] }}</h5>
+                                            <h4 class="card-title text-black"><a href="{{ route('detaillowongan') }}">{{ $item['title'] }}</a></h4>
                                             <p class="card-text limit-text">{{ $item['description'] }}</p>
                                         </div>
                                     </div>
@@ -232,7 +232,7 @@
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-8">
-                    <h2>{{ $data['berita_utama']['title'] }}</h2>
+                    <h2><a href="{{ route('detailnews') }}">{{ $data['berita_utama']['title'] }}</a></h2>
                     <p class="text-muted">Dipublikasikan pada tanggal
                         {{ date('j F Y', strtotime($data['berita_utama']['created_at'])) }}</p>
                     <img src="/storage/{{ $data['berita_utama']['image'] }}" alt="Gambar Artikel" class="img-fluid mb-4">
