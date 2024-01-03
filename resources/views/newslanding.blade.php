@@ -13,7 +13,7 @@
 
 @section('content')
     <style>
-      .custom-navbar {
+        .custom-navbar {
             transition: background-color 0.3s, box-shadow 0.3s;
             position: fixed;
             width: 100%;
@@ -32,7 +32,8 @@
         }
 
         body {
-            margin-top: 56px; /* Height of the navbar */
+            margin-top: 56px;
+            /* Height of the navbar */
         }
 
         .custom-navbar a.navbar-brand,
@@ -55,107 +56,60 @@
             height: 250px;
             object-fit: cover;
         }
+
+        .limit-text {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+        }
     </style>
-</head>
+    </head>
 
-<body>
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white custom-navbar">
-            <div class="container-fluid">
-                <div class="d-flex justify-content-center mb-2">
-                    <img src="{{ asset('assets/img/logo/logo_uin.png') }}" alt="Logo UIN" style="width: 60px;">
-                </div>
-                <a class="navbar-brand" href="#">UIN SUSKA</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('landing') }}">HOME</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"href="{{ route('lowonganlanding') }}">LOWONGAN</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('newslanding') }}">NEWS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">CONTACT</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+    <body>
+        @include('layouts.sections.navbar.navbar_before_login')
 
-    <!-- section header -->
-    <div class="container mt-4">
-            <div class="row">
+        <!-- section header -->
+        <div class="container my-5 py-2">
+            <div class="row py-5">
                 <div class="col-md-8">
-                    <h2>{{ $data['berita_utama']['title'] }}</h2>
-                    <p class="text-muted">Dipublikasikan pada tanggal
-                        {{ date('j F Y', strtotime($data['berita_utama']['created_at'])) }}</p>
-                    <img src="/storage/{{ $data['berita_utama']['image'] }}" alt="Gambar Artikel" class="img-fluid mb-4">
-                    <p>{!! $data['berita_utama']['content'] !!}</p>
+                    <div class="position-relative rounded"
+                        style="height: 450px; background-image: url(/storage/{{ $berita_utama['image'] }}); background-size: cover; background-position: center;">
+                        <div class="rounded position-absolute bottom-0 p-3 w-100"
+                            style="background-color: rgba(0, 0, 0, 0.5);">
+                            <h2><a href="/berita/detail/{{ $berita_utama['id'] }}">{{ $berita_utama['title'] }}</a>
+                            </h2>
+                            <p class="text-light mb-0">Dipublikasikan pada tanggal
+                                {{ date('j F Y', strtotime($berita_utama['created_at'])) }}</p>
+                        </div>
+                    </div>
+                    <p class="limit-text">{{ preg_replace('/&nbsp;/', ' ', strip_tags($berita_utama['content'])) }}</p>
+                    <a href="/berita/detail/{{ $berita_utama['id'] }}" class="btn btn-primary">Baca Selengkapnya</a>
                 </div>
                 <div class="col-md-4">
                     <h4>Berita Terkini</h4>
                     <ul class="list-group">
-                        @foreach (array_slice($data['berita'], 0, 5) as $item)
-                            <li class="list-group-item">{{ $item['title'] }}</li>
+                        @foreach (array_slice($berita, 0, 5) as $item)
+                            <a href="/berita/detail/{{ $item['id'] }}"
+                                class="list-group-item list-group-item-action">{{ $item['title'] }}</a>
                         @endforeach
                     </ul>
                 </div>
-                <div class="row">
-                    @foreach (array_slice($data['berita'], 0, 5) as $item)
-                        <div class="col-lg-3">
-                            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Gambar Berita 1">
+            </div>
+            <div class="row">
+                @foreach ($berita as $item)
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <img src="/storage/{{ $item['image'] }}" class="card-img-top" alt="Gambar Berita 1">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $item['title'] }}</h5>
                                 <p class="card-text limit-text">{{ strip_tags($item['content']) }}</p>
-                                <a href="#" class="btn btn-primary">Baca Selengkapnya</a>
+                                <a href="/berita/detail/{{ $item['id'] }}" class="btn btn-primary">Baca Selengkapnya</a>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-            </div>
-
-        </div>
-        <!-- Berita Terkini section with corrected class -->
-        <div class="col-md-4 ml-auto mr-3">
-            <h4 class="">Berita Terkini</h4>
-            <!-- Display recent news as cards -->
-            <div class="list-group">
-                <!-- Sample news item (replace with dynamic content) -->
-                <a href="#" class="list-group-item list-group-item-action">News Title 1</a>
-                <!-- Repeat the above structure for each news item -->
+                    </div>
+                @endforeach
             </div>
         </div>
-        <!-- End of Berita Terkini section -->
-    </div>
-</div>
-
-        <!-- jsnavbar -->
-        <script>
-            //  <!-- Initialize the carousel -->
-
-            $(document).ready(function() {
-                $('#lowongan-carousel')a.carousel();
-            });
-
-            // Add scroll event listener to the window
-            window.addEventListener('scroll', function() {
-                // Get the navbar element
-                const navbar = document.querySelector('.custom-navbar');
-
-                // Add or remove the 'scrolled' class based on the scroll position
-                if (window.scrollY > 0) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-        </script>
     </body>
 @endsection

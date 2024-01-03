@@ -82,6 +82,8 @@
 
         .hero-section {
             margin-top: -180px;
+            position: relative;
+            z-index: 99;
             /* Adjust this value to align the hero with the SVG border */
         }
 
@@ -99,38 +101,10 @@
     </style>
 
     <body>
-        <!-- navbar -->
-        <nav class="navbar navbar-expand-lg navbar custom-navbar">
-            <div class="container-fluid">
-                <div class="d-flex justify-content-center mb-2">
-                    <img src="{{ asset('assets/img/logo/logo_uin.png') }}" alt="Logo UIN" style="width: 60px;">
-                </div>
-                <a class="navbar-brand" href="#">UIN SUSKA</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('landing') }}">HOME</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"href="{{ route('lowonganlanding') }}">LOWONGAN</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('newslanding') }}">NEWS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('contactlanding') }}">CONTACT</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        @include('layouts.sections.navbar.navbar_before_login')
 
         <!-- section header -->
-        <div class="">
+        <section>
             <header class="page-header-ui page-header-ui-dark bg-img-cover overlay overlay-primary overlay-90"
                 style="background-image: url('{{ asset('assets/img/logo/uin.jpg') }}');width:100%; background-repeat: no-repeat;background-size: cover;">
                 <div class="page-header-ui-content py-5 position-relative">
@@ -146,15 +120,13 @@
                     </div>
                 </div>
                 <div class="svg-border-rounded text-white">
-                    <!-- Rounded SVG Border-->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 18" preserveAspectRatio="none"
                         fill="currentColor">
-                        <path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path>
+                        <path d="M144.54,18H0V0H144.54ZM0,0S32.36,18,72.27,18,144.54,0,144.54,0"></path>
                     </svg>
                 </div>
             </header>
 
-            <!-- hero -->
             <div class="container hero-section">
                 <div class="rounded shadow p-5 bg-white">
                     <div class="row">
@@ -167,8 +139,7 @@
                         </div>
                         <div class="col-lg-4 col-md-12 mt-5 mt-lg-0 text-center">
                             <i class="ti-book text-primary h1"></i>
-                            <h3 class="mt-4 text-capitalize h5 "><a
-                                    href="">Scholarship </a></h3>
+                            <h3 class="mt-4 text-capitalize h5 "><a href="">Scholarship </a></h3>
 
                             <p class="regular text-muted">Fulfill the requirements and get the scholar ship you need.</p>
 
@@ -185,9 +156,7 @@
                     </div>
                 </div>
             </div>
-            </section>
 
-            <!-- Carousel with Cards -->
             <div id="lowongan-carousel" class="container carousel slide" data-ride="carousel">
                 <div class="d-flex justify-content-center">
                     <h1 class=" py-4">LOWONGAN</h1>
@@ -200,7 +169,9 @@
                                     <div class="card">
                                         <img src="/storage/{{ $item['image'] }}" class="card-img-top" alt="...">
                                         <div class="card-body">
-                                            <h4 class="card-title text-black"><a href="{{ route('detaillowongan') }}">{{ $item['title'] }}</a></h4>
+                                            <h4 class="card-title text-black"><a
+                                                    href="/lowongan/detail/{{ $item['id'] }}">{{ $item['title'] }}</a>
+                                            </h4>
                                             <p class="card-text limit-text">{{ $item['description'] }}</p>
                                         </div>
                                     </div>
@@ -225,62 +196,66 @@
                     <li data-target="#lowongan-carousel" data-slide-to="2"></li>
                 </ol>
             </div>
-            <!-- End Carousel with Cards -->
+        </section>
 
-        </div>
-        <!-- Konten Utama -->
-        <div class="container mt-4">
+        <div class="container mt-4 mb-5">
             <div class="row">
                 <div class="col-md-8">
-                    <h2><a href="{{ route('detailnews') }}">{{ $data['berita_utama']['title'] }}</a></h2>
-                    <p class="text-muted">Dipublikasikan pada tanggal
-                        {{ date('j F Y', strtotime($data['berita_utama']['created_at'])) }}</p>
-                    <img src="/storage/{{ $data['berita_utama']['image'] }}" alt="Gambar Artikel" class="img-fluid mb-4">
+                    <div class="position-relative rounded"
+                        style="height: 450px; background-image: url(/storage/{{ $item['image'] }}); background-size: cover; background-position: center;">
+                        <div class="rounded position-absolute bottom-0 p-3 w-100"
+                            style="background-color: rgba(0, 0, 0, 0.5);">
+                            <h2><a
+                                    href="/berita/detail/{{ $data['berita_utama']['id'] }}">{{ $data['berita_utama']['title'] }}</a>
+                            </h2>
+                            <p class="text-light mb-0">Dipublikasikan pada tanggal
+                                {{ date('j F Y', strtotime($data['berita_utama']['created_at'])) }}</p>
+                        </div>
+                    </div>
+                    {{-- <img src="/storage/{{ $data['berita_utama']['image'] }}" alt="Gambar Artikel" class="img-fluid mb-4"> --}}
                     <p>{!! $data['berita_utama']['content'] !!}</p>
                 </div>
                 <div class="col-md-4">
                     <h4>Berita Terkini</h4>
                     <ul class="list-group">
                         @foreach (array_slice($data['berita'], 0, 5) as $item)
-                            <li class="list-group-item">{{ $item['title'] }}</li>
+                            <a href="/berita/detail/{{ $item['id'] }}"
+                                class="list-group-item list-group-item-action">{{ $item['title'] }}</a>
                         @endforeach
                     </ul>
                 </div>
                 <div class="row">
                     @foreach (array_slice($data['berita'], 0, 5) as $item)
                         <div class="col-lg-3">
-                            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Gambar Berita 1">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $item['title'] }}</h5>
-                                <p class="card-text limit-text">{{ strip_tags($item['content']) }}</p>
-                                <a href="#" class="btn btn-primary">Baca Selengkapnya</a>
+                            <div class="card m-0" style="width: auto;">
+                                <img src="/storage/{{ $item['image'] }}" class="card-img-top" alt="Gambar Berita 1">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $item['title'] }}</h5>
+                                    <p class="card-text limit-text">{{ strip_tags($item['content']) }}</p>
+                                    <a href="/berita/detail/{{ $item['id'] }}" class="btn btn-primary">Baca
+                                        Selengkapnya</a>
+                                </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
-
         </div>
-        <!-- jsnavbar -->
+
         <script>
-            //  <!-- Initialize the carousel -->
-
             $(document).ready(function() {
-                $('#lowongan-carousel').carousel();
-            });
+                $('#lowongan-carousel').carousel()
+            })
 
-            // Add scroll event listener to the window
             window.addEventListener('scroll', function() {
-                // Get the navbar element
-                const navbar = document.querySelector('.custom-navbar');
+                const navbar = document.querySelector('.custom-navbar')
 
-                // Add or remove the 'scrolled' class based on the scroll position
                 if (window.scrollY > 0) {
-                    navbar.classList.add('scrolled');
+                    navbar.classList.add('scrolled')
                 } else {
-                    navbar.classList.remove('scrolled');
+                    navbar.classList.remove('scrolled')
                 }
-            });
+            })
         </script>
     </body>
 @endsection

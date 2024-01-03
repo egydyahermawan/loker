@@ -46,11 +46,10 @@ Route::post('/berita/delete/{id}', [BlogController::class, 'destroy']);
 
 // Before Login
 Route::get('/', [LandingController::class, 'landing'])->name('landing');
-Route::get('/lowonganlanding', [LandingController::class, 'lowonganlanding'])->name('lowonganlanding');
-Route::get('/newslanding', [LandingController::class, 'newslanding'])->name('newslanding');
-Route::get('/contactlanding', [LandingController::class, 'contactlanding'])->name('contactlanding');
+Route::get('/daftar-lowongan', [LandingController::class, 'daftar_lowongan'])->name('daftar_lowongan');
+Route::get('/daftar-berita', [LandingController::class, 'daftar_berita'])->name('daftar_berita');
+Route::get('/contact', [LandingController::class, 'contact'])->name('contact');
 
 //detail
-Route::get('/detaillowongan', [LandingController::class, 'detaillowongan'])->name('detaillowongan');
-Route::get('/detailnews', [LandingController::class, 'detailnews'])->name('detailnews');
-
+Route::get('/lowongan/detail/{id}', [LandingController::class, 'detaillowongan'])->name('detaillowongan');
+Route::get('/berita/detail/{id}', [LandingController::class, 'detailnews'])->name('detailnews');

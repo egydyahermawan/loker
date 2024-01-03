@@ -13,7 +13,7 @@
 
 @section('content')
     <style>
-      .custom-navbar {
+        .custom-navbar {
             transition: background-color 0.3s, box-shadow 0.3s;
             position: fixed;
             width: 100%;
@@ -32,7 +32,8 @@
         }
 
         body {
-            margin-top: 56px; /* Height of the navbar */
+            margin-top: 56px;
+            /* Height of the navbar */
         }
 
         .custom-navbar a.navbar-brand,
@@ -55,107 +56,92 @@
             height: 250px;
             object-fit: cover;
         }
+
+        .limit-text {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+        }
     </style>
-</head>
+    </head>
 
-<body>
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white custom-navbar">
-            <div class="container-fluid">
-                <div class="d-flex justify-content-center mb-2">
-                    <img src="{{ asset('assets/img/logo/logo_uin.png') }}" alt="Logo UIN" style="width: 60px;">
-                </div>
-                <a class="navbar-brand" href="#">UIN SUSKA</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('landing') }}">HOME</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"href="{{ route('lowonganlanding') }}">LOWONGAN</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">NEWS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">CONTACT</a>
-                        </li>
-                    </ul>
-                </div>
+    <body>
+        @include('layouts.sections.navbar.navbar_before_login')
+
+        <!-- section header -->
+        <div class="content">
+            <div class="d-flex justify-content-center">
+                <h1>Lowongan</h1>
             </div>
-        </nav>
-
-    <!-- section header -->
-<div class="content">
-<div class="d-flex justify-content-center">
-    <h1>Lowongan</h1>
-</div>
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="row g-0">
-                    <!-- Job Image on the left -->
-                    <div class="d-flex justify-content-center col-md-4 py-3">
-                        <img src="{{ asset('assets/img/logo/logo_uin.png') }}" style="width: 100px;" alt="Job Image">
-                    </div>
-                    <!-- Job Count and details on the right -->
-                    <div class="col-md-8">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="text-center">
-                                <h5 class="card-title">Job Title</h5>
-                                <p class="card-text">Job description goes here.</p>
-                            </div>
-                            <div class="ml-auto text-right">
-                                <p class="card-title">Lowongan</p>
-                                <div class="d-flex justify-content-center">
-                                    <h1 class="job-count-box mb-0">9</h1>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-8 mb-4">
+                        @foreach ($lowongan as $item)
+                            <div class="card mb-3" style="overflow: hidden;">
+                                <div class="row g-0 mx-0">
+                                    <!-- Job Image on the left -->
+                                    <div class="col-md-4"
+                                        style="background-image: url('/storage/{{ $item->image }}'); background-size: cover; background-position: center;">
+                                        {{-- <img src="/storage/{{ $item->image }}" style="width: 100px;" alt="Job Image"> --}}
+                                    </div>
+                                    <!-- Job Count and details on the right -->
+                                    <div class="col-md-8">
+                                        <div class="card-body p-0">
+                                            <div class="row">
+                                                <div class="col-8 p-3">
+                                                    <a href="/lowongan/detail/{{ $item->id }}"
+                                                        class="card-title fw-medium fs-5">{{ $item->title }}</a>
+                                                    <p class="card-text limit-text">{{ strip_tags($item->description) }}</p>
+                                                </div>
+                                                <div class="col-4 px-0 d-flex flex-column justify-content-center align-items-center"
+                                                    style="background-color: rgba(177, 215, 180, 0.5);">
+                                                    <h1 class="job-count-box mb-0">{{ $item->slot }}</h1>
+                                                    <p class="card-title">Lowongan</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Berita Terkini section with corrected class -->
+                    <div class="col-md-4">
+                        <h4 class="">Berita Terkini</h4>
+                        <!-- Display recent news as cards -->
+                        <div class="list-group">
+                            @foreach ($berita as $item)
+                                <a href="/berita/detail/{{ $item->id }}"
+                                    class="list-group-item list-group-item-action">{{ $item->title }}</a>
+                            @endforeach
                         </div>
                     </div>
+                    <!-- End of Berita Terkini section -->
                 </div>
             </div>
-        </div>
 
-        <!-- Berita Terkini section with corrected class -->
-        <div class="col-md-4 ml-auto mr-3">
-            <h4 class="">Berita Terkini</h4>
-            <!-- Display recent news as cards -->
-            <div class="list-group">
-                <!-- Sample news item (replace with dynamic content) -->
-                <a href="#" class="list-group-item list-group-item-action">News Title 1</a>
-                <!-- Repeat the above structure for each news item -->
-            </div>
-        </div>
-        <!-- End of Berita Terkini section -->
-    </div>
-</div>
+            <!-- jsnavbar -->
+            <script>
+                //  <!-- Initialize the carousel -->
 
-        <!-- jsnavbar -->
-        <script>
-            //  <!-- Initialize the carousel -->
+                $(document).ready(function() {
+                    $('#lowongan-carousel') a.carousel();
+                });
 
-            $(document).ready(function() {
-                $('#lowongan-carousel')a.carousel();
-            });
+                // Add scroll event listener to the window
+                window.addEventListener('scroll', function() {
+                    // Get the navbar element
+                    const navbar = document.querySelector('.custom-navbar');
 
-            // Add scroll event listener to the window
-            window.addEventListener('scroll', function() {
-                // Get the navbar element
-                const navbar = document.querySelector('.custom-navbar');
-
-                // Add or remove the 'scrolled' class based on the scroll position
-                if (window.scrollY > 0) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-        </script>
+                    // Add or remove the 'scrolled' class based on the scroll position
+                    if (window.scrollY > 0) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+            </script>
     </body>
 @endsection

@@ -29,7 +29,8 @@
         }
 
         body {
-            margin-top: 56px; /* Height of the navbar */
+            margin-top: 56px;
+            /* Height of the navbar */
         }
 
         .custom-navbar a.navbar-brand,
@@ -74,126 +75,45 @@
         }
     </style>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white custom-navbar">
-        <div class="container-fluid">
-            <div class="d-flex justify-content-center mb-2">
-                <img src="{{ asset('assets/img/logo/logo_uin.png') }}" alt="Logo UIN" style="width: 60px;">
-            </div>
-            <a class="navbar-brand" href="#">UIN SUSKA</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('landing') }}">HOME</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('lowonganlanding') }}">LOWONGAN</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">NEWS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">CONTACT</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-<div class="content">
-    <!-- Content -->
-    <div class="content-wrapper">
-        <div class="ex-basic-2x">
-            <div class="container">
-                <div class="row">
-                    <!-- Latest Announcements Column -->
-                    <div class="col-lg-3">
-                        <div class="card announcement-card">
-                            <div class="card-body">
-                                <!-- Latest Announcements -->
-                                <p class="card-text">
-                                    <a href="https://cdc.radenfatah.ac.id/front/detail_announcement/147"
-                                       rel="noopener noreferrer">Lowongan Kerja Business Support Assistant (BSA)</a>
-                                    <br>
-                                    <span>2023-12-11 10:52:28</span>
-                                </p>
-                                <!-- Add other announcements as needed -->
-                                <a href="https://cdc.radenfatah.ac.id/front/announcement"
-                                   class="btn btn-primary btn-sm" rel="noopener noreferrer">See all..</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Main Content Column -->
-                    <div class="col-lg-9">
+    <body>
+        @include('layouts.sections.navbar.navbar_before_login')
+        <div class="content">
+            <!-- Content -->
+            <div class="content-wrapper">
+                <div class="ex-basic-2x">
+                    <div class="container">
                         <div class="text-container">
-                            <h3>Lowongan Kerja PKSS</h3>
+                            <h3>{{ $lowongan->title }}</h3>
                             <!-- Image Section -->
                             <div class="row">
                                 <div class="col-12">
-                                    <img src="https://cdc.radenfatah.ac.id/assets/img/announcement/1697014611452.jpg"
-                                         alt="foto" style="max-width: 100%">
+                                    <img src="/storage/{{ $lowongan->image }}" alt="foto" style="max-width: 100%">
                                 </div>
                             </div>
                             <br>
                             <!-- Date Section -->
-                            <span>update: 2023-10-11 16:01:14</span>
+                            <div class="d-flex flex-column">
+                                <p class="mb-0">Update: {{ date('j F Y', strtotime($lowongan['updated_at'])) }}</p>
+                            </div>
                             <hr>
                             <!-- Description Section -->
                             <h5>Description</h5>
-                            <p>
-                                Assalamualaikum wr wb<br>
-                                Mahasiswa dan Alumni UIN Raden Fatah Palembang,<br>
-                                #InfoLowongankerja<br>
-                                We are Hiring ! PKSS membuka kesempatan untuk para talenta<br>
-                                terbaik<br>
-                                Info lebih lanjut silahkan kunjungi :<br>
-                                Instagram : pkss.id / pkss.palembang<br>
-                                Semoga bermanfaat <img alt="????" src="https://static.xx.fbcdn.net/images/emoji.php/v9/t80/1/16/1f64f.png"><br>
-                                _____________________<br>
-                                CDC UIN Raden Fatah Palembang<br>
-                                Buka Layanan<br>
-                                <img alt="?" src="https://static.xx.fbcdn.net/images/emoji.php/v9/t34/1/16/23f0.png"> Pukul : 08:00 s/d 16.00 WIB<br>
-                                <img alt="????" src="https://static.xx.fbcdn.net/images/emoji.php/v9/tfc/1/16/1f3e6.png"> Jl. Pangeran Ratu, 5 Ulu, Kecamatan Seberang Ulu I, Kota Palembang, Sumatera Selatan 30267 (Kampus B)<br>
-                                Wassalamualaikum wr wb<br>
-                                _____________________<br>
-                                CDC UIN Raden Fatah Palembang<br>
-                                Let's Join With Us, akan ada banyak informasi webinar, Beasiswa dan lowongan kerja di akun kita :<br>
-                                Web : <a href="https://cdc.radenfatah.ac.id/?fbclid=IwAR1M8QfU5fM_l811UkBT7zMKExqEQlGEukN8bKseHYceujY-et85q1YjV_I" rel="nofollow noreferrer" tabindex="0" target="_blank">http://cdc.radenfatah.ac.id/</a><br>
-                                Fb : <a href="https://www.facebook.com/cdcuinradenfatah?__cft__[0]=AZVnRrY6qR-J77AnsFZicSDQDocDzdHDajY8d8S_rzvbDWrRa_M8OzQSa7TncsLX8ohC3W7NSELwiWT1fuECWTS1clYZvVVcAHRLxRYZ1w7JqDoYHh-RTCR47jpdKNVWALa3yPOiJFtdNMEDoSyIqdqNOAERu_2bgwrZcoXr2wevhROG9XUl7Ogos9RtMzvFvrg&__tn__=-]K-R" tabindex="0">https://www.facebook.com/cdcuinradenfatah</a><br>
-                                IG : <a href="https://www.instagram.com/cdcuinrafah/?fbclid=IwAR28NW7h7buxxeA_jocldaTBzF1hLkrGTawvijEzDmKiSGmx52a_NsxSAJY" rel="nofollow noreferrer" tabindex="0" target="_blank">https://www.instagram.com/cdcuinrafah/</a><br>
-                                WA : <a href="https://bit.ly/3tYsn7a?fbclid=IwAR3BOQe7_vI1aijIQXejnwIq-lfUHENm4mxLqmWye9yhwAObSGN2xNyp4dc" rel="nofollow noreferrer" tabindex="0" target="_blank">https://bit.ly/3tYsn7a</a><br>
-                                Email : cdc_uin@radenfatah.ac.id<br>
-                                <img alt="" src="https://cdc.radenfatah.ac.id/assets/upload/WhatsApp%20Image%202023-10-11%20at%2015.25.26.jpeg" style="height:778px; width:600px">
-                            </p>
+                            <p>{!! $lowongan->description !!}</p>
                             <hr>
-                        </div> <!-- end of text-container -->
-                    </div>
-                </div> <!-- end of row -->
-            </div> <!-- end of container -->
+                            <div class="d-flex flex-column">
+                                <p class="mb-0">Perusahaan:
+                                    {{ json_decode($lowongan->perusahaan->info)->nama_perusahaan }}</p>
+                                <p class="mb-0">Jenis Perusahaan:
+                                    {{ json_decode($lowongan->perusahaan->info)->jenis_perusahaan }}</p>
+                                <p class="mb-0">Email:
+                                    {{ json_decode($lowongan->perusahaan->info)->email_perusahaan }}</p>
+                                <p class="mb-0">Telp:
+                                    {{ json_decode($lowongan->perusahaan->info)->telp_perusahaan }}</p>
+                            </div>
+                        </div>
+                    </div> <!-- end of container -->
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-    <!-- JavaScript Section -->
-    <script>
-        // Initialize the carousel
-        $(document).ready(function () {
-            $('#lowongan-carousel').carousel();
-        });
-
-        // Add scroll event listener to the window
-        window.addEventListener('scroll', function () {
-            // Get the navbar element
-            const navbar = document.querySelector('.custom-navbar');
-
-            // Add or remove the 'scrolled' class based on the scroll position
-            if (window.scrollY > 0) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-    </script>
+    </body>
 @endsection

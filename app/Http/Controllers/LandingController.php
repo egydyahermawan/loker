@@ -21,29 +21,42 @@ class LandingController extends Controller
 
     return view('landing', ['data' => $data]);
   }
-  public function lowonganlanding()
+
+  public function daftar_lowongan(Request $request)
   {
-      // Logic to fetch data or perform operations for the About page
-      return view('lowonganlanding');
+    $lowongan = Lowongan::orderBy('updated_at', 'desc')->get();
+    $berita = Blog::orderBy('updated_at', 'desc')->take(5)->get();
+
+    return view('lowonganlanding', ['lowongan' => $lowongan, 'berita' => $berita]);
   }
-  public function newslanding()
+
+  public function daftar_berita()
   {
-      // Logic to fetch data or perform operations for the About page
-      return view('newslanding');
+    $berita = Blog::orderBy('updated_at', 'desc')->get()->toArray();
+    $berita_utama = $berita[0];
+    $berita = array_slice($berita, 1);
+
+    return view('newslanding', ['berita_utama' => $berita_utama, 'berita' => $berita]);
   }
-  public function contactlanding()
+
+  public function contact()
   {
-      // Logic to fetch data or perform operations for the About page
-      return view('contactlanding');
+
+    return view('contactlanding');
   }
-  public function detaillowongan()
+
+  public function detaillowongan(Request $request, $id)
   {
-      // Logic to fetch data or perform operations for the About page
-      return view('detaillowongan');
+    $lowongan = Lowongan::find($id);
+
+    return view('detaillowongan', ['lowongan' => $lowongan]);
   }
-  public function detailnews()
+
+  public function detailnews(Request $request, $id)
   {
-      // Logic to fetch data or perform operations for the About page
-      return view('detailnews');
+    $berita = Blog::find($id);
+    $berita_list = Blog::where('id', '!=', $id)->get()->toArray();
+
+    return view('detailnews', ['berita' => $berita, 'others' => $berita_list]);
   }
 }

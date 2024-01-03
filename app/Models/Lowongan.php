@@ -10,4 +10,9 @@ class Lowongan extends Model
   use HasFactory;
 
   protected $fillable = ['title', 'description', 'slot', 'open', 'closed', 'status', 'image', 'id_perusahaan'];
+
+  public function perusahaan()
+  {
+    return $this->belongsTo('App\Models\User', 'id_perusahaan', 'id');
+  }
 }
