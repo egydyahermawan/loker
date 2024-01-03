@@ -202,7 +202,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="position-relative rounded"
-                        style="height: 450px; background-image: url(/storage/{{ $item['image'] }}); background-size: cover; background-position: center;">
+                        style="height: 450px; background-image: url(/storage/{{ $data['berita_utama']['image'] }}); background-size: cover; background-position: center;">
                         <div class="rounded position-absolute bottom-0 p-3 w-100"
                             style="background-color: rgba(0, 0, 0, 0.5);">
                             <h2><a
