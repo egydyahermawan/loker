@@ -13,8 +13,8 @@ class LandingController extends Controller
     $lowongan = Lowongan::where('status', 'available')->take(9)->orderBy('updated_at', 'desc')->get()->toArray();
     $berita = Blog::latest()->orderBy('updated_at', 'desc')->get()->toArray();
 
-    $data['berita_utama'] = $berita[0];
-    $data['berita'] = array_slice($berita, 1);
+    $data['berita_utama'] = count($berita) == 0 ? [] : $berita[0];
+    $data['berita'] = count($berita) <= 1  ? [] : array_slice($berita, 1);
     $data['lowongan'] = array_chunk($lowongan, 3);
 
     // dd($data);
@@ -24,7 +24,7 @@ class LandingController extends Controller
 
   public function daftar_lowongan(Request $request)
   {
-    $lowongan = Lowongan::orderBy('updated_at', 'desc')->get();
+    $lowongan = Lowongan::orderBy('updated_at', 'desc')->paginate(2);
     $berita = Blog::orderBy('updated_at', 'desc')->take(5)->get();
 
     return view('lowonganlanding', ['lowongan' => $lowongan, 'berita' => $berita]);

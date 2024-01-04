@@ -82,7 +82,9 @@
                                                 <div class="my-3 rounded"
                                                     style="background-image: url('/storage/{{ $item->image }}'); background-size: cover; height: 250px; background-position: center;">
                                                 </div>
-                                                <p class="card-text">{{ $item->description }}</p>
+                                                <p class="card-text"
+                                                    style="display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+                                                    {{ strip_tags($item->description) }}</p>
                                                 <div class="d-flex flex-row gap-2 mb-3">
                                                     <div class="d-flex flex-row align-items-center">
                                                         <span class="badge bg-label-info me-2">Open</span>

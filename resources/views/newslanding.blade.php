@@ -88,12 +88,19 @@
                 </div>
                 <div class="col-md-4">
                     <h4>Berita Terkini</h4>
-                    <ul class="list-group">
-                        @foreach (array_slice($berita, 0, 5) as $item)
-                            <a href="/berita/detail/{{ $item['id'] }}"
-                                class="list-group-item list-group-item-action">{{ $item['title'] }}</a>
-                        @endforeach
-                    </ul>
+                    <div class="card w-100">
+                        <div class="card-body">
+                            @foreach (array_slice($berita, 0, 5) as $item)
+                                <div
+                                    class="d-flex flex-column {{ $loop->index == count(array_slice($berita, 0, 5)) - 1 ? '' : 'mb-3' }}">
+                                    <a href="/berita/detail/{{ $item['id'] }}"
+                                        class="fs-5 fw-medium">{{ $item['title'] }}</a>
+                                    <p class="mb-0 fw-light">Update:
+                                        {{ date('j F Y', strtotime($item['updated_at'])) }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">

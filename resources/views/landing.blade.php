@@ -162,23 +162,27 @@
                     <h1 class=" py-4">LOWONGAN</h1>
                 </div>
                 <div class="carousel-inner">
-                    @foreach ($data['lowongan'] as $chunk)
-                        <div class="carousel-item {{ $loop->index == 0 ? 'active' : '' }}">
-                            <div class="d-flex justify-content-center gap-5">
-                                @foreach ($chunk as $item)
-                                    <div class="card">
-                                        <img src="/storage/{{ $item['image'] }}" class="card-img-top" alt="...">
-                                        <div class="card-body">
-                                            <h4 class="card-title text-black"><a
-                                                    href="/lowongan/detail/{{ $item['id'] }}">{{ $item['title'] }}</a>
-                                            </h4>
-                                            <p class="card-text limit-text">{{ $item['description'] }}</p>
+                    @if (count($data['lowongan']) == 0)
+                        <p class="text-center fs-4 fw-medium">No Lowongan Data!</p>
+                    @else
+                        @foreach ($data['lowongan'] as $chunk)
+                            <div class="carousel-item {{ $loop->index == 0 ? 'active' : '' }}">
+                                <div class="d-flex justify-content-center gap-5">
+                                    @foreach ($chunk as $item)
+                                        <div class="card">
+                                            <img src="/storage/{{ $item['image'] }}" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                                <h4 class="card-title text-black"><a
+                                                        href="/lowongan/detail/{{ $item['id'] }}">{{ $item['title'] }}</a>
+                                                </h4>
+                                                <p class="card-text limit-text">{{ strip_tags($item['description']) }}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    @endif
                 </div>
                 <a class="carousel-control-prev" href="#lowongan-carousel" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -198,31 +202,42 @@
             </div>
         </section>
 
-        <div class="container mt-4 mb-5">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="position-relative rounded"
-                        style="height: 450px; background-image: url(/storage/{{ $data['berita_utama']['image'] }}); background-size: cover; background-position: center;">
-                        <div class="rounded position-absolute bottom-0 p-3 w-100"
-                            style="background-color: rgba(0, 0, 0, 0.5);">
-                            <h2><a
-                                    href="/berita/detail/{{ $data['berita_utama']['id'] }}">{{ $data['berita_utama']['title'] }}</a>
-                            </h2>
-                            <p class="text-light mb-0">Dipublikasikan pada tanggal
-                                {{ date('j F Y', strtotime($data['berita_utama']['created_at'])) }}</p>
+        @if (count($data['berita_utama']) != 0)
+            <div class="container mt-4 mb-5">
+                <div class="row mb-5">
+                    <div class="col-md-8">
+                        <div class="position-relative rounded"
+                            style="height: 450px; background-image: url(/storage/{{ $data['berita_utama']['image'] }}); background-size: cover; background-position: center;">
+                            <div class="rounded position-absolute bottom-0 p-3 w-100"
+                                style="background-color: rgba(0, 0, 0, 0.5);">
+                                <h2><a
+                                        href="/berita/detail/{{ $data['berita_utama']['id'] }}">{{ $data['berita_utama']['title'] }}</a>
+                                </h2>
+                                <p class="text-light mb-0">Dipublikasikan pada tanggal
+                                    {{ date('j F Y', strtotime($data['berita_utama']['created_at'])) }}</p>
+                            </div>
+                        </div>
+                        {{-- <img src="/storage/{{ $data['berita_utama']['image'] }}" alt="Gambar Artikel" class="img-fluid mb-4"> --}}
+                        <p class="limit-text">{{ strip_tags($data['berita_utama']['content']) }}</p>
+                        <a href="/berita/detail/{{ $data['berita_utama']['id'] }}" class="btn btn-primary">Lihat
+                            Selengkapnya</a>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Berita Terkini</h4>
+                        <div class="card w-100">
+                            <div class="card-body">
+                                @foreach (array_slice($data['berita'], 0, 5) as $item)
+                                    <div class="d-flex flex-column mb-3">
+                                        <a href="/berita/detail/{{ $item['id'] }}"
+                                            class="fs-5 fw-medium">{{ $item['title'] }}</a>
+                                        <p class="mb-0 fw-light">Update:
+                                            {{ date('j F Y', strtotime($item['updated_at'])) }}</p>
+                                    </div>
+                                @endforeach
+                                <a href="/daftar-berita" class="btn btn-primary mt-2">See All</a>
+                            </div>
                         </div>
                     </div>
-                    {{-- <img src="/storage/{{ $data['berita_utama']['image'] }}" alt="Gambar Artikel" class="img-fluid mb-4"> --}}
-                    <p>{!! $data['berita_utama']['content'] !!}</p>
-                </div>
-                <div class="col-md-4">
-                    <h4>Berita Terkini</h4>
-                    <ul class="list-group">
-                        @foreach (array_slice($data['berita'], 0, 5) as $item)
-                            <a href="/berita/detail/{{ $item['id'] }}"
-                                class="list-group-item list-group-item-action">{{ $item['title'] }}</a>
-                        @endforeach
-                    </ul>
                 </div>
                 <div class="row">
                     @foreach (array_slice($data['berita'], 0, 5) as $item)
@@ -240,7 +255,7 @@
                     @endforeach
                 </div>
             </div>
-        </div>
+        @endif
 
         <script>
             $(document).ready(function() {

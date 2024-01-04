@@ -63,6 +63,18 @@
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 5;
         }
+
+        .page-item.active .page-link {
+            color: #fff !important;
+            background-color: #7FB77E !important;
+            border-color: #7FB77E !important;
+        }
+
+        .page-item.active .page-link:hover {
+            color: #fff !important;
+            background-color: #639563 !important;
+            border-color: #639563 !important;
+        }
     </style>
     </head>
 
@@ -105,17 +117,50 @@
                                 </div>
                             </div>
                         @endforeach
+                        <nav class="text-center">
+                            <ul class="pagination justify-content-center">
+                                @if ($lowongan->currentPage() != 1)
+                                    <li class="page-item">
+                                        <a class="page-link" href="/daftar-lowongan?page={{ $lowongan->currentPage() - 1 }}"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                @for ($i = 0; $i < $lowongan->lastPage(); $i++)
+                                    <li class="page-item {{ $lowongan->currentPage() == $i + 1 ? 'active' : '' }}"><a
+                                            class="page-link"
+                                            href="/daftar-lowongan?page={{ $i + 1 }}">{{ $i + 1 }}</a></li>
+                                @endfor
+                                @if ($lowongan->lastPage() != $lowongan->currentPage())
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="/daftar-lowongan?page={{ $lowongan->currentPage() + 1 }}"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </nav>
                     </div>
 
                     <!-- Berita Terkini section with corrected class -->
                     <div class="col-md-4">
                         <h4 class="">Berita Terkini</h4>
                         <!-- Display recent news as cards -->
-                        <div class="list-group">
-                            @foreach ($berita as $item)
-                                <a href="/berita/detail/{{ $item->id }}"
-                                    class="list-group-item list-group-item-action">{{ $item->title }}</a>
-                            @endforeach
+                        <div class="card w-100">
+                            <div class="card-body">
+                                @foreach ($berita as $item)
+                                    <div class="d-flex flex-column mb-3">
+                                        <a href="/berita/detail/{{ $item['id'] }}"
+                                            class="fs-5 fw-medium">{{ $item['title'] }}</a>
+                                        <p class="mb-0 fw-light">Update:
+                                            {{ date('j F Y', strtotime($item['updated_at'])) }}</p>
+                                    </div>
+                                @endforeach
+                                <a href="/daftar-berita" class="btn btn-primary mt-2">See All</a>
+                            </div>
                         </div>
                     </div>
                     <!-- End of Berita Terkini section -->
